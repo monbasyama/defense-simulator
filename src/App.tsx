@@ -52,6 +52,7 @@ function PatternCard({
   const grid = calculateGrid(pattern.status)
   const rounds = buildRounds(pattern.status)
   const entries = buildRoundEntries(pattern.status)
+  const rides = entries.length ? buildRides(pattern.status, entries[0]) : []
   const orderText = roundsToText(pattern.status, names)
   const [copied, setCopied] = useState(false)
 
@@ -144,21 +145,24 @@ function PatternCard({
         </div>
         <div className="order-text">
           {rounds.length === 0 && '守備が未設定です'}
+          {rides.length > 0 && (
+            <div className="order-rides">
+              <div className="order-title">・1周目の追いポカ</div>
+              {rides.map((ride, k) => (
+                <div key={k} className="order-ride">
+                  <Badge n={ride.defender} />
+                  {names[ride.defender - 1] && `(${names[ride.defender - 1]})`}に
+                  <Badge n={ride.rider} />
+                  {names[ride.rider - 1] && `(${names[ride.rider - 1]})`}が乗る
+                </div>
+              ))}
+            </div>
+          )}
           {rounds.map((r, i) => (
-          <div key={i} className="order-round">
-            <div className="order-row">
-              <span className="order-label">{i + 1}周目</span>
+            <div key={i} className="order-row">
+              <span className="order-label">・{i + 1}周目：</span>
               {r.map((p, j) => <Badge key={j} n={p} />)}
             </div>
-            {buildRides(pattern.status, entries[i]).map((ride, k) => (
-              <div key={k} className="order-ride">
-                <Badge n={ride.defender} />
-                {names[ride.defender - 1] && `(${names[ride.defender - 1]})`}に
-                <Badge n={ride.rider} />
-                {names[ride.rider - 1] && `(${names[ride.rider - 1]})`}が乗る
-              </div>
-            ))}
-          </div>
           ))}
         </div>
       </div>
