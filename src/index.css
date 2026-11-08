@@ -1,20 +1,15 @@
 :root {
-  --bg: #0f1220;
-  --surface: rgba(255, 255, 255, 0.06);
-  --border: rgba(255, 255, 255, 0.12);
-  --text: #e8eaf6;
-  --muted: #9aa0c3;
-  --accent: #7c8cff;
-  --accent2: #b06cff;
+  --bg: #f4f6fb;
+  --surface: #ffffff;
+  --border: #e3e7f0;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --accent: #4f6bed;
 }
 * { box-sizing: border-box; touch-action: manipulation; }
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Noto Sans JP', 'Meiryo', sans-serif;
-  background:
-    radial-gradient(900px 500px at 10% -10%, rgba(124, 140, 255, 0.25), transparent),
-    radial-gradient(800px 500px at 100% 0%, rgba(176, 108, 255, 0.2), transparent),
-    var(--bg);
-  background-attachment: fixed;
+  background: var(--bg);
   color: var(--text);
   margin: 0;
   padding: 16px;

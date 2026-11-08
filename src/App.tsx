@@ -14,7 +14,9 @@ import {
 type Pattern = { id: number; name: string; status: CellStatus }
 
 const STORAGE_KEY = 'defense-simulator-patterns'
-const circled = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩']
+
+// 丸数字フォントは字形のサイズが不揃いなため、CSSで統一サイズの丸を描く
+const Badge = ({ n }: { n: number }) => <span className="badge">{n}</span>
 
 function load(): Pattern[] {
   try {
@@ -43,7 +45,8 @@ function PatternCard({
   onDelete: () => void
 }) {
   const grid = calculateGrid(pattern.status)
-  const orderText = roundsToText(buildRounds(pattern.status))
+  const rounds = buildRounds(pattern.status)
+  const orderText = roundsToText(rounds)
   const [copied, setCopied] = useState(false)
 
   const copy = async () => {
@@ -100,7 +103,7 @@ function PatternCard({
           <tbody>
             {players.map((p) => (
               <tr key={p}>
-                <td className="sticky-col">{circled[p - 1]}</td>
+                <td className="sticky-col"><Badge n={p} /></td>
                 {turns.map((t) => {
                   const c = grid[p][t]
                   let cls = ''
@@ -133,7 +136,15 @@ function PatternCard({
             {copied ? '✓ コピーしました' : '📋 コピー'}
           </button>
         </div>
-        <pre className="order-text">{orderText || '守備が未設定です'}</pre>
+        <div className="order-text">
+          {rounds.length === 0 && '守備が未設定です'}
+          {rounds.map((r, i) => (
+            <div key={i} className="order-row">
+              <span className="order-label">{i + 1}巡目</span>
+              {r.map((p, j) => <Badge key={j} n={p} />)}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
