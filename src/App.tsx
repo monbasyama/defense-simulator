@@ -8,6 +8,7 @@ import {
   key,
   roundsToText,
   rotateStatus,
+  statusFromRounds,
   type CellStatus,
 } from './sim'
 
@@ -150,6 +151,61 @@ function PatternCard({
   )
 }
 
+
+function OrderBuilder({ onCreate }: { onCreate: (rounds: number[][]) => void }) {
+  const [rounds, setRounds] = useState<number[][]>(() => Array.from({ length: 4 }, () => []))
+  const players = Array.from({ length: PLAYER_COUNT }, (_, i) => i + 1)
+
+  const toggle = (r: number, n: number) =>
+    setRounds(
+      rounds.map((row, i) =>
+        i !== r ? row : row.includes(n) ? row.filter((x) => x !== n) : [...row, n],
+      ),
+    )
+  const total = rounds.reduce((a, r) => a + r.length, 0)
+
+  return (
+    <div className="builder">
+      <h2>進行順からパターンを作成</h2>
+      <p className="builder-note">各巡目で守備に出る番号を順番にタップしてください（もう一度タップで取り消し）。</p>
+      {rounds.map((row, r) => (
+        <div key={r} className="builder-row">
+          <span className="order-label">{r + 1}巡目</span>
+          <div className="builder-picks">
+            {players.map((n) => {
+              const idx = row.indexOf(n)
+              return (
+                <button
+                  key={n}
+                  className={`pick ${idx >= 0 ? 'picked' : ''}`}
+                  onClick={() => toggle(r, n)}
+                >
+                  {n}
+                  {idx >= 0 && <sup>{idx + 1}</sup>}
+                </button>
+              )
+            })}
+          </div>
+          <div className="builder-result">
+            {row.map((n, j) => <Badge key={j} n={n} />)}
+          </div>
+          <button className="btn btn-secondary small" onClick={() => setRounds(rounds.map((x, i) => (i === r ? [] : x)))}>
+            クリア
+          </button>
+        </div>
+      ))}
+      <div className="builder-actions">
+        {rounds.length < 10 && (
+          <button className="btn btn-secondary" onClick={() => setRounds([...rounds, []])}>＋ 巡を追加</button>
+        )}
+        <button className="btn btn-add" disabled={total === 0} onClick={() => onCreate(rounds)}>
+          この進行順でパターンを作成
+        </button>
+      </div>
+    </div>
+  )
+}
+
 export default function App() {
   const [patterns, setPatterns] = useState<Pattern[]>(load)
 
@@ -183,6 +239,8 @@ export default function App() {
         <button className="btn btn-add" onClick={() => add()}>＋ 比較パターンを追加</button>
         <button className="btn btn-dl" onClick={() => window.print()}>📄 PDF出力</button>
       </div>
+
+      <OrderBuilder onCreate={(r) => add(statusFromRounds(r))} />
 
       {patterns.map((p, i) => (
         <PatternCard

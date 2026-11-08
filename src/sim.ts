@@ -83,3 +83,16 @@ export function buildRounds(status: CellStatus): number[][] {
 
 export const roundsToText = (rounds: number[][]) =>
   rounds.map((r, i) => `${i + 1}巡目${r.map((p) => CIRCLED[p - 1]).join('')}`).join('\n')
+
+// 進行順(巡ごとの番号列)を1ターンずつ守備として並べたパターンに変換する
+export function statusFromRounds(rounds: number[][]): CellStatus {
+  const s: CellStatus = {}
+  let t = 1
+  for (const r of rounds) {
+    for (const p of r) {
+      if (t > TOTAL_TURNS) return s
+      s[key(p, t++)] = 'defend'
+    }
+  }
+  return s
+}

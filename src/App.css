@@ -95,3 +95,16 @@ tbody td.cell-defend:hover { background: #ffe3e3; }
   .order-row { margin-bottom: 2px; gap: 3px; }
   .legend { break-inside: avoid; }
 }
+
+.builder { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; margin-bottom: 24px; box-shadow: 0 2px 10px rgba(31, 41, 55, .06); }
+.builder h2 { font-size: 16px; margin: 0 0 4px; }
+.builder-note { font-size: 12px; color: var(--muted); margin: 0 0 10px; }
+.builder-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 10px; padding: 8px 0; border-top: 1px solid #eef0f5; }
+.builder-picks { display: flex; gap: 4px; flex-wrap: wrap; }
+.pick { position: relative; width: 36px; height: 36px; border-radius: 10px; border: 1.5px solid var(--border); background: #f9fafb; color: var(--text); font-size: 15px; font-weight: 700; cursor: pointer; }
+.pick:hover { border-color: var(--accent); }
+.pick.picked { background: var(--accent); border-color: var(--accent); color: #fff; }
+.pick sup { position: absolute; top: 1px; right: 3px; font-size: 9px; opacity: .85; }
+.builder-result { display: flex; gap: 4px; flex-wrap: wrap; flex: 1; min-width: 60px; }
+.builder-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+@media print { .builder { display: none; } }
