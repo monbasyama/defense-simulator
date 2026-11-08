@@ -98,8 +98,22 @@ export function buildRides(status: CellStatus, round: Entry[]): Ride[] {
   return rides
 }
 
-export const roundsToText = (rounds: number[][]) =>
-  rounds.map((r, i) => `${i + 1}周目${r.map((p) => CIRCLED[p - 1]).join('')}`).join('\n')
+const label = (p: number, names: string[]) => `${CIRCLED[p - 1]}${names[p - 1] ? `(${names[p - 1]})` : ''}`
+
+// コピー用テキスト。「乗る」の説明は1周目のみ付ける
+export function roundsToText(status: CellStatus, names: string[]): string {
+  const entries = buildRoundEntries(status)
+  return entries
+    .map((r, i) => {
+      const head = `${i + 1}周目${r.map((e) => CIRCLED[e.p - 1]).join('')}`
+      if (i > 0) return head
+      const rides = buildRides(status, r).map(
+        (x) => `${label(x.defender, names)}に${label(x.rider, names)}が乗る`,
+      )
+      return [head, ...rides].join('\n')
+    })
+    .join('\n')
+}
 
 // 進行順(周ごとの番号列)を1ターンずつ守備として並べたパターンに変換する
 export function statusFromRounds(rounds: number[][]): CellStatus {

@@ -52,7 +52,7 @@ function PatternCard({
   const grid = calculateGrid(pattern.status)
   const rounds = buildRounds(pattern.status)
   const entries = buildRoundEntries(pattern.status)
-  const orderText = roundsToText(rounds)
+  const orderText = roundsToText(pattern.status, names)
   const [copied, setCopied] = useState(false)
 
   const copy = async () => {
