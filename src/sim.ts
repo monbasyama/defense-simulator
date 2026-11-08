@@ -54,7 +54,9 @@ export function calculateGrid(status: CellStatus): Cell[][] {
         grid[p][t] = { status: 'follow', value: '追', alert: false, healExhausted: false }
       } else {
         gp[p] = Math.min(GP_MAX, gp[p] + GP_REGEN)
-        grid[p][t] = { status: null, value: gp[p], alert: false, healExhausted: false }
+        // 回復を使い切った後でGPが35未満の間は、守備を入力しなくても警告色にする
+        const exhausted = healUsed[p] >= MAX_HEAL_COUNT
+        grid[p][t] = { status: null, value: gp[p], alert: exhausted && gp[p] < GP_ALERT, healExhausted: false }
       }
     }
   }

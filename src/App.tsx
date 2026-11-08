@@ -113,7 +113,7 @@ function PatternCard({
                 <td className="sticky-col"><Badge n={p} /></td>
                 {turns.map((t) => {
                   const c = grid[p][t]
-                  let cls = ''
+                  let cls = c.status === null && c.alert ? 'cell-alert' : ''
                   let title: string | undefined
                   if (c.status === 'follow') cls = 'cell-follow'
                   else if (c.status === 'defend') {
