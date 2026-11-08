@@ -108,3 +108,16 @@ tbody td.cell-defend:hover { background: #ffe3e3; }
 .builder-result { display: flex; gap: 4px; flex-wrap: wrap; flex: 1; min-width: 60px; }
 .builder-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
 @media print { .builder { display: none; } }
+
+/* 1周目の最大10個が必ず1行に収まるよう、幅に合わせて丸を縮める */
+.order-row, .builder-result { flex-wrap: nowrap; }
+.order-row .badge, .builder-result .badge { flex: 0 1 28px; min-width: 0; width: auto; height: auto; aspect-ratio: 1; max-width: 28px; }
+.order-label { flex: none; }
+.builder-result { flex: 1 1 100%; order: 3; }
+@media (max-width: 600px) {
+  .order-row, .builder-result { gap: 3px; }
+  .order-row .badge, .builder-result .badge { font-size: 12px; border-width: 1.5px; }
+}
+@media print {
+  .order-row .badge { max-width: 15px; font-size: 9px; }
+}
