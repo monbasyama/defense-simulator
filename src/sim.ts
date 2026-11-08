@@ -63,7 +63,7 @@ export function calculateGrid(status: CellStatus): Cell[][] {
 
 const CIRCLED = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩']
 
-// 守備の出たターン順に並べ、同じ番号が再登場した時点で次の巡に切り替える
+// 守備の出たターン順に並べ、同じ番号が再登場した時点で次の周に切り替える
 export function buildRounds(status: CellStatus): number[][] {
   const rounds: number[][] = []
   let cur: number[] = []
@@ -82,9 +82,9 @@ export function buildRounds(status: CellStatus): number[][] {
 }
 
 export const roundsToText = (rounds: number[][]) =>
-  rounds.map((r, i) => `${i + 1}巡目${r.map((p) => CIRCLED[p - 1]).join('')}`).join('\n')
+  rounds.map((r, i) => `${i + 1}周目${r.map((p) => CIRCLED[p - 1]).join('')}`).join('\n')
 
-// 進行順(巡ごとの番号列)を1ターンずつ守備として並べたパターンに変換する
+// 進行順(周ごとの番号列)を1ターンずつ守備として並べたパターンに変換する
 export function statusFromRounds(rounds: number[][]): CellStatus {
   const s: CellStatus = {}
   let t = 1

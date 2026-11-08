@@ -141,7 +141,7 @@ function PatternCard({
           {rounds.length === 0 && '守備が未設定です'}
           {rounds.map((r, i) => (
             <div key={i} className="order-row">
-              <span className="order-label">{i + 1}巡目</span>
+              <span className="order-label">{i + 1}周目</span>
               {r.map((p, j) => <Badge key={j} n={p} />)}
             </div>
           ))}
@@ -167,10 +167,10 @@ function OrderBuilder({ onCreate }: { onCreate: (rounds: number[][]) => void }) 
   return (
     <div className="builder">
       <h2>進行順からパターンを作成</h2>
-      <p className="builder-note">各巡目で守備に出る番号を順番にタップしてください（もう一度タップで取り消し）。</p>
+      <p className="builder-note">各周目で守備に出る番号を順番にタップしてください（もう一度タップで取り消し）。</p>
       {rounds.map((row, r) => (
         <div key={r} className="builder-row">
-          <span className="order-label">{r + 1}巡目</span>
+          <span className="order-label">{r + 1}周目</span>
           <div className="builder-picks">
             {players.map((n) => {
               const idx = row.indexOf(n)
@@ -196,7 +196,7 @@ function OrderBuilder({ onCreate }: { onCreate: (rounds: number[][]) => void }) 
       ))}
       <div className="builder-actions">
         {rounds.length < 10 && (
-          <button className="btn btn-secondary" onClick={() => setRounds([...rounds, []])}>＋ 巡を追加</button>
+          <button className="btn btn-secondary" onClick={() => setRounds([...rounds, []])}>＋ 周を追加</button>
         )}
         <button className="btn btn-add" disabled={total === 0} onClick={() => onCreate(rounds)}>
           この進行順でパターンを作成
