@@ -63,22 +63,39 @@ export function calculateGrid(status: CellStatus): Cell[][] {
 
 const CIRCLED = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩']
 
+export type Entry = { p: number; t: number }
+export type Ride = { defender: number; rider: number }
+
 // 守備の出たターン順に並べ、同じ番号が再登場した時点で次の周に切り替える
-export function buildRounds(status: CellStatus): number[][] {
-  const rounds: number[][] = []
-  let cur: number[] = []
+export function buildRoundEntries(status: CellStatus): Entry[][] {
+  const rounds: Entry[][] = []
+  let cur: Entry[] = []
   for (let t = 1; t <= TOTAL_TURNS; t++) {
     for (let p = 1; p <= PLAYER_COUNT; p++) {
       if (status[key(p, t)] !== 'defend') continue
-      if (cur.includes(p)) {
+      if (cur.some((e) => e.p === p)) {
         rounds.push(cur)
         cur = []
       }
-      cur.push(p)
+      cur.push({ p, t })
     }
   }
   if (cur.length) rounds.push(cur)
   return rounds
+}
+
+export const buildRounds = (status: CellStatus): number[][] =>
+  buildRoundEntries(status).map((r) => r.map((e) => e.p))
+
+// 同じターンに守備と「追」が重なっているものを「守備に追が乗る」として抽出する
+export function buildRides(status: CellStatus, round: Entry[]): Ride[] {
+  const rides: Ride[] = []
+  for (const { p, t } of round) {
+    for (let q = 1; q <= PLAYER_COUNT; q++) {
+      if (status[key(q, t)] === 'follow') rides.push({ defender: p, rider: q })
+    }
+  }
+  return rides
 }
 
 export const roundsToText = (rounds: number[][]) =>

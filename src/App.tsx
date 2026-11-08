@@ -3,6 +3,8 @@ import './App.css'
 import {
   PLAYER_COUNT,
   TOTAL_TURNS,
+  buildRoundEntries,
+  buildRides,
   buildRounds,
   calculateGrid,
   key,
@@ -49,6 +51,7 @@ function PatternCard({
 }) {
   const grid = calculateGrid(pattern.status)
   const rounds = buildRounds(pattern.status)
+  const entries = buildRoundEntries(pattern.status)
   const orderText = roundsToText(rounds)
   const [copied, setCopied] = useState(false)
 
@@ -142,13 +145,20 @@ function PatternCard({
         <div className="order-text">
           {rounds.length === 0 && '守備が未設定です'}
           {rounds.map((r, i) => (
-            <div key={i} className="order-row">
+          <div key={i} className="order-round">
+            <div className="order-row">
               <span className="order-label">{i + 1}周目</span>
               {r.map((p, j) => <Badge key={j} n={p} />)}
-              {r.some((p) => names[p - 1]) && (
-                <span className="order-names">{r.map((p) => names[p - 1] || p).join('→')}</span>
-              )}
             </div>
+            {buildRides(pattern.status, entries[i]).map((ride, k) => (
+              <div key={k} className="order-ride">
+                <Badge n={ride.defender} />
+                {names[ride.defender - 1] && `(${names[ride.defender - 1]})`}に
+                <Badge n={ride.rider} />
+                {names[ride.rider - 1] && `(${names[ride.rider - 1]})`}が乗る
+              </div>
+            ))}
+          </div>
           ))}
         </div>
       </div>
