@@ -3,8 +3,10 @@ import './App.css'
 import {
   PLAYER_COUNT,
   TOTAL_TURNS,
+  buildRounds,
   calculateGrid,
   key,
+  roundsToText,
   rotateStatus,
   type CellStatus,
 } from './sim'
@@ -41,6 +43,14 @@ function PatternCard({
   onDelete: () => void
 }) {
   const grid = calculateGrid(pattern.status)
+  const orderText = roundsToText(buildRounds(pattern.status))
+  const [copied, setCopied] = useState(false)
+
+  const copy = async () => {
+    await navigator.clipboard.writeText(orderText)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500)
+  }
   const turns = Array.from({ length: TOTAL_TURNS }, (_, i) => i + 1)
   const players = Array.from({ length: PLAYER_COUNT }, (_, i) => i + 1)
 
@@ -115,6 +125,15 @@ function PatternCard({
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="order-panel">
+        <div className="order-head">
+          <span>進行順</span>
+          <button className="btn btn-secondary small" onClick={copy} disabled={!orderText}>
+            {copied ? '✓ コピーしました' : '📋 コピー'}
+          </button>
+        </div>
+        <pre className="order-text">{orderText || '守備が未設定です'}</pre>
       </div>
     </div>
   )

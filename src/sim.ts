@@ -60,3 +60,26 @@ export function calculateGrid(status: CellStatus): Cell[][] {
   }
   return grid
 }
+
+const CIRCLED = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨', '⑩']
+
+// 守備の出たターン順に並べ、同じ番号が再登場した時点で次の巡に切り替える
+export function buildRounds(status: CellStatus): number[][] {
+  const rounds: number[][] = []
+  let cur: number[] = []
+  for (let t = 1; t <= TOTAL_TURNS; t++) {
+    for (let p = 1; p <= PLAYER_COUNT; p++) {
+      if (status[key(p, t)] !== 'defend') continue
+      if (cur.includes(p)) {
+        rounds.push(cur)
+        cur = []
+      }
+      cur.push(p)
+    }
+  }
+  if (cur.length) rounds.push(cur)
+  return rounds
+}
+
+export const roundsToText = (rounds: number[][]) =>
+  rounds.map((r, i) => `${i + 1}巡目${r.map((p) => CIRCLED[p - 1]).join('')}`).join('\n')

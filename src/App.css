@@ -84,3 +84,13 @@ tbody td:not(.sticky-col):active { opacity: .7; }
   .cell-alert { background: #ffec99; color: #d9480f; }
   .legend { break-inside: avoid; background: #fff; color: #000; border-color: #ccc; }
 }
+
+.order-panel { border-top: 1px solid var(--border); padding: 12px 16px; }
+.order-head { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 6px; }
+.order-text { margin: 0; font-family: inherit; font-size: 14px; line-height: 1.8; white-space: pre-wrap; user-select: text; -webkit-user-select: text; }
+@media print {
+  .order-panel { border-color: #ccc; padding: 4px 6px; }
+  .order-head button { display: none; }
+  .order-head { color: #000; }
+  .order-text { font-size: 9px; line-height: 1.4; color: #000; }
+}
