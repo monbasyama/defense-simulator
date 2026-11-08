@@ -121,3 +121,20 @@ tbody td.cell-defend:hover { background: #ffe3e3; }
 @media print {
   .order-row .badge { max-width: 15px; font-size: 9px; }
 }
+
+/* バッジ寸法は画面幅から算出し、10個が必ず1行に収まるようにする */
+:root { --b: min(26px, calc((100vw - 190px) / 10)); }
+.order-row .badge, .builder-result .badge {
+  flex: none; width: var(--b); height: var(--b); max-width: none; aspect-ratio: auto;
+  font-size: calc(var(--b) * 0.55); border-width: 1.5px;
+}
+.order-row, .builder-result { gap: 3px; }
+.order-label { min-width: 3em; }
+.order-names { font-size: 12px; color: var(--muted); margin-left: 6px; white-space: nowrap; }
+@media (max-width: 600px) { .order-row { flex-wrap: wrap; } .order-names { flex-basis: 100%; margin: 0 0 0 3em; white-space: normal; } }
+@media print { :root { --b: 15px; } .order-names { display: inline; font-size: 8px; } }
+
+.names-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px 12px; margin-top: 8px; }
+.name-field { display: flex; align-items: center; gap: 8px; }
+.name-field input { flex: 1; min-width: 0; padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; background: #f9fafb; user-select: text; -webkit-user-select: text; }
+.name-field input:focus { outline: 2px solid var(--accent); border-color: transparent; }

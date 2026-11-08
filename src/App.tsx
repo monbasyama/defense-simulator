@@ -35,10 +35,12 @@ function load(): Pattern[] {
 function PatternCard({
   index,
   pattern,
+  names,
   onChange,
   onDuplicate,
   onDelete,
 }: {
+  names: string[]
   index: number
   pattern: Pattern
   onChange: (p: Pattern) => void
@@ -143,6 +145,9 @@ function PatternCard({
             <div key={i} className="order-row">
               <span className="order-label">{i + 1}周目</span>
               {r.map((p, j) => <Badge key={j} n={p} />)}
+              {r.some((p) => names[p - 1]) && (
+                <span className="order-names">{r.map((p) => names[p - 1] || p).join('→')}</span>
+              )}
             </div>
           ))}
         </div>
@@ -151,6 +156,38 @@ function PatternCard({
   )
 }
 
+
+const NAMES_KEY = 'defense-simulator-names'
+
+function loadNames(): string[] {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(NAMES_KEY) ?? '[]')
+    if (Array.isArray(parsed)) return Array.from({ length: PLAYER_COUNT }, (_, i) => String(parsed[i] ?? ''))
+  } catch {
+    /* ignore */
+  }
+  return Array(PLAYER_COUNT).fill('')
+}
+
+function NamesPanel({ names, onChange }: { names: string[]; onChange: (n: string[]) => void }) {
+  return (
+    <div className="builder">
+      <h2>名前設定</h2>
+      <div className="names-grid">
+        {names.map((name, i) => (
+          <label key={i} className="name-field">
+            <Badge n={i + 1} />
+            <input
+              value={name}
+              placeholder={`${i + 1}番の名前`}
+              onChange={(e) => onChange(names.map((x, j) => (j === i ? e.target.value : x)))}
+            />
+          </label>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 function OrderBuilder({ onCreate }: { onCreate: (rounds: number[][]) => void }) {
   const [rounds, setRounds] = useState<number[][]>(() => Array.from({ length: 4 }, () => []))
@@ -208,6 +245,11 @@ function OrderBuilder({ onCreate }: { onCreate: (rounds: number[][]) => void }) 
 
 export default function App() {
   const [patterns, setPatterns] = useState<Pattern[]>(load)
+  const [names, setNames] = useState<string[]>(loadNames)
+
+  useEffect(() => {
+    localStorage.setItem(NAMES_KEY, JSON.stringify(names))
+  }, [names])
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(patterns))
@@ -240,12 +282,15 @@ export default function App() {
         <button className="btn btn-dl" onClick={() => window.print()}>📄 PDF出力</button>
       </div>
 
+      <NamesPanel names={names} onChange={setNames} />
+
       <OrderBuilder onCreate={(r) => add(statusFromRounds(r))} />
 
       {patterns.map((p, i) => (
         <PatternCard
           key={p.id}
           index={i}
+          names={names}
           pattern={p}
           onChange={(np) => setPatterns(patterns.map((x) => (x.id === p.id ? np : x)))}
           onDuplicate={() => add({ ...p.status })}
