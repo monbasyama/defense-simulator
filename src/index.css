@@ -1,6 +1,24 @@
+:root {
+  --bg: #0f1220;
+  --surface: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.12);
+  --text: #e8eaf6;
+  --muted: #9aa0c3;
+  --accent: #7c8cff;
+  --accent2: #b06cff;
+}
 * { box-sizing: border-box; touch-action: manipulation; }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
-  background: #f8f9fa; margin: 0; padding: 10px; color: #212529;
-  -webkit-user-select: none; user-select: none;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Noto Sans JP', 'Meiryo', sans-serif;
+  background:
+    radial-gradient(900px 500px at 10% -10%, rgba(124, 140, 255, 0.25), transparent),
+    radial-gradient(800px 500px at 100% 0%, rgba(176, 108, 255, 0.2), transparent),
+    var(--bg);
+  background-attachment: fixed;
+  color: var(--text);
+  margin: 0;
+  padding: 16px;
+  min-height: 100vh;
+  -webkit-user-select: none;
+  user-select: none;
 }
