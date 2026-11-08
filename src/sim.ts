@@ -100,19 +100,16 @@ export function buildRides(status: CellStatus, round: Entry[]): Ride[] {
 
 const label = (p: number, names: string[]) => `${CIRCLED[p - 1]}${names[p - 1] ? `(${names[p - 1]})` : ''}`
 
-// コピー用テキスト。「乗る」の説明は1周目のみ付ける
+// コピー用テキスト。「乗る」の説明は1周目のみ、先頭にまとめて付ける
 export function roundsToText(status: CellStatus, names: string[]): string {
   const entries = buildRoundEntries(status)
-  return entries
-    .map((r, i) => {
-      const head = `${i + 1}周目${r.map((e) => CIRCLED[e.p - 1]).join('')}`
-      if (i > 0) return head
-      const rides = buildRides(status, r).map(
-        (x) => `${label(x.defender, names)}に${label(x.rider, names)}が乗る`,
-      )
-      return [head, ...rides].join('\n')
-    })
-    .join('\n')
+  if (!entries.length) return ''
+  const rides = buildRides(status, entries[0]).map(
+    (x) => `${label(x.defender, names)}に${label(x.rider, names)}が乗る`,
+  )
+  const list = entries.map((r, i) => `・${i + 1}周目：${r.map((e) => CIRCLED[e.p - 1]).join('')}`)
+  const top = rides.length ? ['・1周目の追いポカ', ...rides, ''] : []
+  return [...top, ...list].join('\n')
 }
 
 // 進行順(周ごとの番号列)を1ターンずつ守備として並べたパターンに変換する
