@@ -62,6 +62,10 @@ function PatternCard({
     setTimeout(() => setCopied(false), 1500)
   }
   const turns = Array.from({ length: TOTAL_TURNS }, (_, i) => i + 1)
+  // PDF出力時は入力済みの最終ターンまでを表示する
+  const inputTurns = Object.keys(pattern.status).map((k) => Number(k.split('_')[1]))
+  const lastTurn = inputTurns.length ? Math.max(...inputTurns) : TOTAL_TURNS
+  const hideCls = (t: number) => (t > lastTurn ? ' print-hide' : '')
   const players = Array.from({ length: PLAYER_COUNT }, (_, i) => i + 1)
 
   // 未設定 → 守備 → 追 → 解除
@@ -104,7 +108,7 @@ function PatternCard({
           <thead>
             <tr>
               <th className="sticky-col">番</th>
-              {turns.map((t) => <th key={t}>{t}</th>)}
+              {turns.map((t) => <th key={t} className={hideCls(t).trim()}>{t}</th>)}
             </tr>
           </thead>
           <tbody>
@@ -126,7 +130,7 @@ function PatternCard({
                     } else cls = 'cell-defend'
                   }
                   return (
-                    <td key={t} className={cls} title={title} onClick={() => cycle(p, t)}>
+                    <td key={t} className={cls + hideCls(t)} title={title} onClick={() => cycle(p, t)}>
                       {c.value}
                     </td>
                   )

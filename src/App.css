@@ -146,3 +146,4 @@ tbody td.cell-defend:hover { background: #ffe3e3; }
 .order-title { font-weight: 800; margin-bottom: 4px; }
 .order-rides .order-ride { margin-left: 0; }
 .order-label { min-width: 5.5em; }
+@media print { .print-hide { display: none; } }
