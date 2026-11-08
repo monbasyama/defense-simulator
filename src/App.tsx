@@ -298,7 +298,15 @@ export default function App() {
 
       <NamesPanel names={names} onChange={setNames} />
 
-      <OrderBuilder onCreate={(r) => add(statusFromRounds(r))} />
+      <OrderBuilder
+        onCreate={(r) => {
+          const status = statusFromRounds(r)
+          // 何も入力されていないパターンが1つだけなら、新規追加せずそこに反映する
+          if (patterns.length === 1 && Object.keys(patterns[0].status).length === 0) {
+            setPatterns([{ ...patterns[0], status }])
+          } else add(status)
+        }}
+      />
 
       {patterns.map((p, i) => (
         <PatternCard
