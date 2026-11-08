@@ -117,12 +117,12 @@ function PatternCard({
                   let title: string | undefined
                   if (c.status === 'follow') cls = 'cell-follow'
                   else if (c.status === 'defend') {
-                    if (c.healExhausted) {
-                      cls = 'cell-no-heal'
-                      title = '回復上限(3回)消費済み'
-                    } else if (c.alert) {
+                    if (c.alert) {
                       cls = 'cell-alert'
                       title = `守備前GP不足 (${c.value})`
+                    } else if (c.healExhausted) {
+                      cls = 'cell-no-heal'
+                      title = '回復上限(3回)消費済み'
                     } else cls = 'cell-defend'
                   }
                   return (
