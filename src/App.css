@@ -35,3 +35,17 @@ tbody td:not(.sticky-col):active { opacity: .7; }
   th, td { min-width: 30px; width: 30px; height: 30px; line-height: 30px; font-size: 10px; }
   .sticky-col { min-width: 32px; width: 32px; }
 }
+.btn-dl { background: #17a2b8; font-size: 13px; padding: 8px 14px; }
+
+@page { size: A4 landscape; margin: 8mm; }
+@media print {
+  body { background: #fff; padding: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .container { box-shadow: none; padding: 0; margin: 0; }
+  .global-actions, .setting-panel, .header-btns, .conditions { display: none; }
+  .pattern-card { break-inside: avoid; page-break-inside: avoid; box-shadow: none; margin-bottom: 8mm; }
+  .pattern-title-input { border: none; padding: 0; width: auto; field-sizing: content; }
+  .table-container { overflow: visible; max-height: none; }
+  th, td { min-width: 0; width: 17px; height: 15px; line-height: 15px; font-size: 7px; position: static; }
+  .sticky-col { min-width: 0; width: 20px; }
+  .legend { break-inside: avoid; }
+}

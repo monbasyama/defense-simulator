@@ -151,6 +151,7 @@ export default function App() {
 
       <div className="global-actions">
         <button className="btn btn-add" onClick={() => add()}>＋ 比較パターンを追加</button>
+        <button className="btn btn-dl" onClick={() => window.print()}>📄 PDF出力</button>
       </div>
 
       {patterns.map((p, i) => (
