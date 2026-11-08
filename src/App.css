@@ -1,0 +1,5 @@
+main { max-width: 800px; margin: 0 auto; padding: 1rem; text-align: left; }
+.row { display: flex; gap: 0.5rem; margin-bottom: 0.4rem; align-items: center; }
+.row label { display: flex; gap: 0.2rem; align-items: center; font-size: 0.8rem; }
+.row input[type='number'] { width: 5rem; }
+pre { background: #1112; padding: 0.5rem; max-height: 400px; overflow: auto; }
